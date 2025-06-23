@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Basic SEO -->
+  <title>10 Second Stopwatch Game - Fun Reaction Timer Challenge</title>
+  <meta name="description" content="Test your reflexes with the 10 Second Stop Game! Hit stop at exactly 10 seconds to win. Fun, fast, and addictive timer challenge.">
+  <meta name="keywords" content="10 second game, timer stop game, reaction test, reflex challenge, stopwatch game, timing game, online timer game">
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Open Graph for Social Media -->
+  <meta property="og:title" content="10 Second Stop Game - Reflex Timer Challenge">
+  <meta property="og:description" content="Can you stop the timer at exactly 10 seconds? Try the fun and addictive 10 Second Stop Game now!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourwebsite.com/10-second-stop-game">
+  <meta property="og:image" content="https://yourwebsite.com/assets/timer-thumbnail.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="10 Second Stop Game">
+  <meta name="twitter:description" content="Challenge your reflexes with this fun timing game. Stop at exactly 10 seconds to win!">
+  <meta name="twitter:image" content="https://yourwebsite.com/assets/timer-thumbnail.jpg">
+
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px red;
+      text-align: center;
+    }
+
+    #timer {
+      font-size: 5em;
+      letter-spacing: 0.1em;
+      margin-bottom: 50px;
+      text-shadow: 0 0 10px red;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+    }
+
+    .btn {
+      font-size: 2em;
+      padding: 10px 30px;
+      border: 2px solid red;
+      background: none;
+      color: red;
+      cursor: pointer;
+      border-radius: 10px;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: red;
+      color: black;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 2em;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>10 SECOND STOP TIMER!</h1>
+
+  <div id="timer">00:00</div>
+
+  <div class="button-container">
+    <button class="btn" onclick="startTimer()">Start</button>
+    <button class="btn" onclick="stopTimer()">Stop</button>
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    let startTime;
+    let interval;
+    let running = false;
+    let stopped = false;
+
+    function formatTime(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const milliseconds = Math.floor((ms % 1000) / 10);
+      const seconds = totalSeconds % 60;
+      return (
+        String(seconds).padStart(2, '0') + ':' +
+        String(milliseconds).padStart(2, '0')
+      );
+    }
+
+    function startTimer() {
+      if (running) return;
+      running = true;
+      stopped = false;
+      document.getElementById("result").textContent = "";
+      startTime = Date.now();
+
+      interval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const timeStr = formatTime(elapsed);
+        document.getElementById("timer").textContent = timeStr;
+
+        if (elapsed >= 12000) {
+          clearInterval(interval);
+          running = false;
+          if (!stopped) {
+            document.getElementById("timer").textContent = "12:00";
+            document.getElementById("result").textContent = "⌛ You Lose!";
+          }
+        }
+      }, 10);
+    }
+
+    function stopTimer() {
+      if (!running) return;
+      running = false;
+      stopped = true;
+      clearInterval(interval);
+
+      const elapsed = Date.now() - startTime;
+      const timeString = formatTime(elapsed);
+      document.getElementById("timer").textContent = timeString;
+
+      if (timeString === "10:00") {
+        document.getElementById("result").textContent = "🎉 You Win!";
+      } else {
+        document.getElementById("result").textContent = "❌ Try Again!";
+      }
+    }
+  </script>
+
+</body>
+</html>
